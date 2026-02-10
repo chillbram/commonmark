@@ -14,10 +14,19 @@ declare(strict_types=1);
 namespace League\CommonMark\Extension\Strikethrough;
 
 use League\CommonMark\Environment\EnvironmentBuilderInterface;
-use League\CommonMark\Extension\ExtensionInterface;
+use League\CommonMark\Extension\ConfigurableExtensionInterface;
+use League\Config\ConfigurationBuilderInterface;
+use Nette\Schema\Expect;
 
-final class StrikethroughExtension implements ExtensionInterface
+final class StrikethroughExtension implements ConfigurableExtensionInterface
 {
+    public function configureSchema(ConfigurationBuilderInterface $builder): void
+    {
+        $builder->addSchema('strikethrough', Expect::structure([
+            'delimiter' => Expect::anyOf(StrikethroughDelimiterProcessor::DELIMITER_SINGLE, StrikethroughDelimiterProcessor::DELIMITER_DOUBLE, StrikethroughDelimiterProcessor::DELIMITER_BOTH)->default(StrikethroughDelimiterProcessor::DELIMITER_BOTH),
+        ]));
+    }
+
     public function register(EnvironmentBuilderInterface $environment): void
     {
         $environment->addDelimiterProcessor(new StrikethroughDelimiterProcessor());

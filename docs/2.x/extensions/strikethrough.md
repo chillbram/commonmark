@@ -40,8 +40,13 @@ use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
 use League\CommonMark\Extension\Strikethrough\StrikethroughExtension;
 use League\CommonMark\MarkdownConverter;
 
-// Define your configuration, if needed
-$config = [];
+// Extension defaults are shown below
+// If you're happy with the defaults, feel free to remove them from this array
+$config = [
+    'strikethrough' => [
+        'delimiter' => 'both',
+    ],
+];
 
 // Configure the Environment with all the CommonMark parsers/renderers
 $environment = new Environment($config);
@@ -54,3 +59,12 @@ $environment->addExtension(new StrikethroughExtension());
 $converter = new MarkdownConverter($environment);
 echo $converter->convert('This extension is ~~really good~~ great!');
 ```
+
+## Configuration
+
+This extension can be configured by providing a `strikethrough` array with nested configuration options. The defaults are shown in the code example above.
+
+### `delimiter`
+
+By default, this extension supports both `~` and `~~` as delimiters for strikethrough. If you want only one of these to trigger strikethrough, set the `delimiter` configuration option to either `'single'` or `'double'`.  This defaults to `'both'`.
+
